@@ -1,6 +1,6 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
-from langchain.agents import initialize_agent, tool
+from langchain.agents import initialize_agent, tool, AgentType
 from langchain_community.tools import TavilySearchResults
 import datetime
 
@@ -21,7 +21,7 @@ def get_system_time(format: str = "%Y-%m-%d %H:%M:%S"):
 
 tools = [search_tool, get_system_time]
 
-agent = initialize_agent(tools=tools, llm=llm, agent="zero-shot-react-description", verbose=True)
+agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
 
-agent.invoke("When was SpaceX's last launch and how many days ago was that from this instant")
+agent.invoke({"input":"When was SpaceX's last launch and how many days ago was that from this instant"})
 

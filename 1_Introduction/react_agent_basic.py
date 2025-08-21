@@ -20,7 +20,9 @@ def get_system_time(format: str = "%Y-%m-%d %H:%M:%S"):
 
 
 tools = [search_tool, get_system_time]
-
+#giving the agent type of zero-shot react description and it does resoning before acting
+#you can also use other agent types like REACT_DOCSTORE, SELF_ASK_WITH_SEARCH
+#or even CHAT_ZERO_SHOT_REACT_DESCRIPTION, CHAT_CONVERSATIONAL_REACT_DESCRIPTION
 agent = initialize_agent(tools=tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=True)
 
 agent.invoke({"input":"When was SpaceX's last launch and how many days ago was that from this instant"})

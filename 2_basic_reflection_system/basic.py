@@ -25,9 +25,11 @@ def reflect_node(messages):
 
 graph.add_node(GENERATE, generate_node)
 graph.add_node(REFLECT, reflect_node)
+#start of the graph
 graph.set_entry_point(GENERATE)
 
 
+#check if we should continue reflecting or end the process
 def should_continue(state):
     if (len(state) > 6):
         return END 

@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 
-llm = ChatOpenAI(model="gpt-4o")
-
+# llm = ChatOpenAI(model="gpt-4o")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0)
 # class Country(BaseModel):
 
 #     """Information about a country"""
@@ -20,7 +21,7 @@ from typing import Optional
 
 
 # TypedDict
-class Joke(TypedDict):
+class Joke(BaseModel):
     """Joke to tell user."""
 
     setup: Annotated[str, ..., "The setup of the joke"]
@@ -37,30 +38,30 @@ class Joke(TypedDict):
 
 structured_llm = llm.with_structured_output(Joke)
 
-structured_llm.invoke("Tell me a joke about cats")
+print(structured_llm.invoke("Tell me a joke about cats"))
 
 
-json_schema = {
-    "title": "joke",
-    "description": "Joke to tell user.",
-    "type": "object",
-    "properties": {
-        "setup": {
-            "type": "string",
-            "description": "The setup of the joke",
-        },
-        "punchline": {
-            "type": "string",
-            "description": "The punchline to the joke",
-        },
-        "rating": {
-            "type": "integer",
-            "description": "How funny the joke is, from 1 to 10",
-            "default": None,
-        },
-    },
-    "required": ["setup", "punchline"],
-}
-structured_llm = llm.with_structured_output(json_schema)
+# json_schema = {
+#     "title": "joke",
+#     "description": "Joke to tell user.",
+#     "type": "object",
+#     "properties": {
+#         "setup": {
+#             "type": "string",
+#             "description": "The setup of the joke",
+#         },
+#         "punchline": {
+#             "type": "string",
+#             "description": "The punchline to the joke",
+#         },
+#         "rating": {
+#             "type": "integer",
+#             "description": "How funny the joke is, from 1 to 10",
+#             "default": None,
+#         },
+#     },
+#     "required": ["setup", "punchline"],
+# }
+# structured_llm = llm.with_structured_output(json_schema)
 
-structured_llm.invoke("Tell me a joke about cats")
+# structured_llm.invoke("Tell me a joke about cats")

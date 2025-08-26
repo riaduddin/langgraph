@@ -1,6 +1,7 @@
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 import datetime
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from schema import AnswerQuestion, ReviseAnswer
 from langchain_core.output_parsers.openai_tools import PydanticToolsParser, JsonOutputToolsParser
 from langchain_core.messages import HumanMessage
@@ -33,7 +34,8 @@ first_responder_prompt_template = actor_prompt_template.partial(
     first_instruction="Provide a detailed ~250 word answer"
 )
 
-llm = ChatOpenAI(model="gpt-4o")
+# llm = ChatOpenAI(model="gpt-4o")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 first_responder_chain = first_responder_prompt_template | llm.bind_tools(tools=[AnswerQuestion], tool_choice='AnswerQuestion') 
 
@@ -54,9 +56,9 @@ revisor_chain = actor_prompt_template.partial(
     first_instruction=revise_instructions
 ) | llm.bind_tools(tools=[ReviseAnswer], tool_choice="ReviseAnswer")
 
-# response = first_responder_chain.invoke({
-#     "messages": [HumanMessage("AI Agents taking over content creation")]
-# })s
+response = first_responder_chain.invoke({
+    "messages": [HumanMessage("AI Agents taking over content creation")]
+})
 
-# print(response)
+print(response)
 

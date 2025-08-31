@@ -1,10 +1,12 @@
 from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.agents import tool, create_react_agent
 import datetime
 from langchain_community.tools import TavilySearchResults
 from langchain import hub
 
-llm = ChatOpenAI(model="gpt-4")
+#llm = ChatOpenAI(model="gpt-4")
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash")
 
 @tool
 def get_system_time(format: str = "%Y-%m-%d %H:%M:%S"):
@@ -17,7 +19,7 @@ def get_system_time(format: str = "%Y-%m-%d %H:%M:%S"):
 search_tool = TavilySearchResults(search_depth="basic")
 react_prompt = hub.pull("hwchase17/react")
 
-
+# Define the tools to be used by the agent
 tools = [get_system_time, search_tool]
 
 react_agent_runnable = create_react_agent(tools=tools, llm=llm, prompt=react_prompt)

@@ -16,6 +16,7 @@ def get_system_time(format: str = "%Y-%m-%d %H:%M:%S"):
     formatted_time = current_time.strftime(format)
     return formatted_time
 
+#for web search
 search_tool = TavilySearchResults(search_depth="basic")
 react_prompt = hub.pull("hwchase17/react")
 

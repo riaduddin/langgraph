@@ -2,18 +2,21 @@ from typing import TypedDict, Annotated
 from langgraph.graph import add_messages, StateGraph, END
 from langchain_groq import ChatGroq
 from langchain_core.messages import AIMessage, HumanMessage
+from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
 load_dotenv()
 
 llm = ChatGroq(model="llama-3.1-8b-instant")
 
-class BasicChatState(TypedDict):
-    messages: Annotated[list, add_messages]
+
+class BasicChatState(BaseModel):        #instead of TypedDict
+    messages: list[Annotated[HumanMessage, add_messages]]
 
 def chatbot(state: BasicChatState):
+    print("Chatbot State:", state)
     return {
-        "messages": [llm.invoke(state["messages"])]
+        "messages": [llm.invoke(state.messages)]
     }
 
 graph = StateGraph(BasicChatState)

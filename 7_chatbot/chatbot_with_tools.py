@@ -16,6 +16,7 @@ tools = [search_tool]
 
 llm = ChatGroq(model="llama-3.1-8b-instant")
 
+# Bind tools to the LLM
 llm_with_tools = llm.bind_tools(tools=tools)
 
 def chatbot(state: BasicChatBot):
@@ -24,7 +25,9 @@ def chatbot(state: BasicChatBot):
     }
 
 def tools_router(state: BasicChatBot):
+    print(state["messages"])
     last_message = state["messages"][-1]
+    print(last_message)
 
     if(hasattr(last_message, "tool_calls") and len(last_message.tool_calls) > 0):
         return "tool_node"

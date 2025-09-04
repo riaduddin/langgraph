@@ -25,9 +25,9 @@ def chatbot(state: BasicChatBot):
     }
 
 def tools_router(state: BasicChatBot):
-    print(state["messages"])
+    #print(state["messages"])
     last_message = state["messages"][-1]
-    print(last_message)
+    #print(last_message)
 
     if(hasattr(last_message, "tool_calls") and len(last_message.tool_calls) > 0):
         return "tool_node"
@@ -35,7 +35,8 @@ def tools_router(state: BasicChatBot):
         return END
     
 
-tool_node = ToolNode(tools=tools)
+tool_node = ToolNode(tools=tools) #it has message_keys which can be used for using it for different field can be used in the 
+# chatbot state for accessing from the state
 
 graph = StateGraph(BasicChatBot)
 

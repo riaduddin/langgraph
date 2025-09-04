@@ -7,6 +7,7 @@ from langgraph.checkpoint.memory import MemorySaver
 
 load_dotenv()
 
+#checkpoint for the memory
 memory = MemorySaver()
 
 llm = ChatGroq(model="llama-3.1-8b-instant")
@@ -29,6 +30,7 @@ graph.set_entry_point("chatbot")
 
 app = graph.compile(checkpointer=memory)
 
+#thread id for same checkpoint, if the thread is is not same it will start fromo the beginning
 config = {"configurable": {
     "thread_id": 1
 }}

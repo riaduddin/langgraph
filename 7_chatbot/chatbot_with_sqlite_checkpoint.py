@@ -5,12 +5,21 @@ from langchain_core.messages import HumanMessage
 from dotenv import load_dotenv
 from langgraph.checkpoint.sqlite import SqliteSaver
 import sqlite3
-
+import os
 load_dotenv()
 
-sqlite_conn = sqlite3.connect("checkpoint.sqlite", check_same_thread=False)
+# sqlite_conn = sqlite3.connect("checkpoint.sqlite", check_same_thread=False)
 
-memory = SqliteSaver(sqlite_conn)
+from langgraph.checkpoint.mongodb import MongoDBSaver
+from pymongo import MongoClient
+
+MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
+# Create MongoDB client
+client = MongoClient(MONGODB_URL)
+
+# Choose a database & collection for checkpoints
+memory = MongoDBSaver(client, db_name="langgraph_db", collection_name="checkpoints")
+
 
 llm = ChatGroq(model="llama-3.1-8b-instant")
 
